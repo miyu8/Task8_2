@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Life.Initialization;
+using System.Threading;
 
-namespace Life
+namespace User
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static Thread thread;
+        public static void Main()
         {
+            thread = Thread.CurrentThread;
+            Move move = new Move();
         }
     }
 }

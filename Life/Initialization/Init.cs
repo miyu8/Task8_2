@@ -2,9 +2,8 @@
 using Life.Models;
 using System.Threading;
 using Life.BaseData;
-using User;
-using System.Linq;
 using Life.Gaming;
+using Life.GameConsole;
 
 namespace Life.Initialization
 {
@@ -12,126 +11,87 @@ namespace Life.Initialization
     {
         public Cell[,] gameField { get; set; }
         public Cell[,] gameFieldNext;
-        public Thread[] threads = new Thread[2];
-        public EventWaitHandle ew;
-        GameBase igame;
-        Options options;
-        public StartConsole console;
+        public GameBase igame;
+        public GameBaseConsole gameBaseConsole;
+        public Options options;
         public int[] ValueCells = new int[6];
-        public Move()
+        public RecordBase recordBase = new RecordBase();
+        public int Id { get; private set; }
+        public Move(int type, Options newOptions)
         {
-            console = new StartConsole();
-            console.Run();
             Console.Clear();
-            options = new Options();
-            switch (console.Type)
+
+            options = newOptions;
+            switch (type)
             {
                 case 1:
                     igame = new Game1(options.gameProperty);
+                    gameBaseConsole = new Game1Console(options.gameProperty.SizeX, options.gameProperty.SizeY, igame.GetType().Name);
                     break;
                 case 2:
                     igame = new Game2(options.gameProperty, options.grass1Property);
+                    gameBaseConsole = new Game2Console(options.gameProperty.SizeX, options.gameProperty.SizeY, igame.GetType().Name);
                     break;
                 case 3:
                     igame = new Game3(options.gameProperty, options.grass1Property);
+                    gameBaseConsole = new Game3Console(options.gameProperty.SizeX, options.gameProperty.SizeY, igame.GetType().Name);
                     break;
                 case 4:
                     igame = new Game4(options.gameProperty, options.grass2Property, options.herbivorous1Property);
+                    gameBaseConsole = new Game4Console(options.gameProperty.SizeX, options.gameProperty.SizeY, igame.GetType().Name);
                     break;
             }
-            End(console.Type, igame);
-            threads[1].Start();
-            Begin(console.Id, igame);
-            threads[0].Start();
-            ew = new EventWaitHandle(false, EventResetMode.AutoReset);
-            ew.WaitOne();
-            if (threads[1] != null)
-                threads[1].Abort();
-            Console.Clear();
         }
 
-        void Begin(int id, GameBase igame)
+        public void RunSave(int id, int iteration)
         {
-            threads[0] = new Thread(() =>
-            {
-                RecordBase recordBase = new RecordBase();
-                MyConsole myConsole;
-                try
-                {
-                    using (var db = new DataModelContainer())
-                    {
-                        Game game;
-                        game = db.GameSet.Where(x => x.Id == id).FirstOrDefault();
-
-                        if (game != null)
-                        {
-                            igame.gameField = recordBase.TakeList(id, ValueCells);
-                            igame.gameProperty = options.gameProperty;
-                            igame.ValueCells = ValueCells;
-
-                            igame.iteration = game.Iteration;
-                        }
-                        else
-                        {
-                            igame.InitRnd();
-                            igame.iteration = 1;
-                        }
-                        myConsole = new MyConsole(options.gameProperty.SizeX, options.gameProperty.SizeY);
-                        myConsole.DrawConsole(igame.gameField, igame.iteration, igame.ValueCells);
-                        while (igame.Step())
-                        {
-                            myConsole.DrawConsole(igame.gameField, igame.iteration, igame.ValueCells);
-                            Thread.Sleep(500);
-                        }
-
-                        recordBase.RemoveList(id);
-                        Program.thread.Abort();
-                        if (threads[1] != null)
-                            threads[1].Abort();
-                        Program.thread = new Thread(() =>
-                        {
-                            Move move = new Move();
-                        });
-                        Program.thread.Start();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    recordBase.ErrorBase(ex, console);
-                }
-
-            });
+            Id = id;
+            igame.gameField = recordBase.TakeList(id, igame.ValueCells, options);
+            igame.iteration = iteration;
         }
 
-        void End(int typeGame, GameBase igame)
+        public void RunNew()
         {
-            threads[1] = new Thread(() =>
+            igame.InitRnd();
+            igame.iteration = 1;
+        }
+
+        public void Begin()
+        {
+            gameBaseConsole.DrawConsole(igame.gameField, igame.iteration, igame.ValueCells);
+            Thread.Sleep(500);
+            if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)
             {
-                while (Console.ReadKey(true).Key != ConsoleKey.Escape)
+                End();
+                return;
+            }
+            while (igame.Step())
+            {
+                gameBaseConsole.ClearNumbers();
+                gameBaseConsole.DrawConsole(igame.gameField, igame.iteration, igame.ValueCells);
+                Thread.Sleep(500);
+                if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)
                 {
-                    Thread.Sleep(500);
+                    End();
+                    return;
                 }
-                RecordBase recordBase = new RecordBase();
-                try
+            }
+            recordBase.RemoveList(Id);
+        }
+
+        public void End()
+        {
+            try
+            {
+                using (var db = new DataModelContainer())
                 {
-                    using (var db = new DataModelContainer())
-                    {
-                        recordBase.AddList(igame.gameField, typeGame, igame.iteration);
-                    }
+                    recordBase.AddList(igame.gameField, igame.Type, igame.iteration);
                 }
-                catch (Exception ex)
-                {
-                    recordBase.ErrorBase(ex, console);
-                }
-                if (threads[0] != null)
-                    threads[0].Abort();
-                Program.thread.Abort();
-                Program.thread = new Thread(() =>
-                 {
-                     Move move = new Move();
-                 });
-                Program.thread.Start();
-            });
+            }
+            catch (Exception ex)
+            {
+                recordBase.ErrorBase(ex);
+            }
         }
     }
 }

@@ -1,0 +1,32 @@
+﻿{
+	"gameProperty":{
+	  "NamePlayer": "User",
+	  "NamePlay": "Life",
+	  "SizeX": 15,
+	  "SizeY": 15
+
+	},
+    "grass1Property": {
+
+      "Death": 3,
+      "Reproduction": 2
+     
+    },
+    "grass2Property": {
+      "Course": 0,
+      "Frequency": 2
+
+    },
+    "herbivorous1Property": {
+      "EnergyBaseBegin": 10,
+      "EnergyBase": 10,
+      "EnergyConsumption": 1,
+      "StartRot": 0,
+      "TimeRot": 1,
+      "Grass2Radius": 1,
+      "EnergyGrass": 3,
+      "Speed": 1
+    }
+}
+
+ 

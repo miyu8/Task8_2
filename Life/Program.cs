@@ -1,15 +1,15 @@
-﻿using Life.Initialization;
-using System.Threading;
-
+﻿using Life;
+using System;
 namespace User
 {
     public class Program
     {
-        public static Thread thread;
         public static void Main()
+
         {
-            thread = Thread.CurrentThread;
-            Move move = new Move();
+            Console.WriteLine("Настройка игры может занять некоторое время, пожалуйста, подождите");
+            Menu menu = new Menu();
+            menu.Run();
         }
     }
 }

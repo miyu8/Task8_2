@@ -15,7 +15,9 @@ namespace Life
         {
             switch (RandomString(20))
             {
-                case 0 - 2:
+                case 0:
+                case 1:
+                case 2:
                     return true;
             }
             return false;

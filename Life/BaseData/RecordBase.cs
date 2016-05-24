@@ -4,7 +4,8 @@ using Life.Living;
 using Life.Initialization;
 using System.Text;
 using System;
-using System.Threading;
+using Life.Living.Grass;
+using Life.Living.Grass.Life;
 
 namespace Life.BaseData
 {
@@ -48,7 +49,7 @@ namespace Life.BaseData
             }
         }
 
-        public Cell[,] TakeList(int id, int[] ValueCells)
+        public Cell[,] TakeList(int id, int[] ValueCells, Options options)
         {
             using (var db = new DataModelContainer())
             {
@@ -58,29 +59,28 @@ namespace Life.BaseData
                 if (game != null)
                 {
                     ValueCells[0] = game.Type;
-                    Options options = new Options();
                     foreach (var item in db.CoordsSet.Where(x => x.Game.Id == id))
                     {
                         switch (item.TypeLiving)
                         {
                             case 1:
                                 gameField[item.CoordX, item.CoordY] = new Cell(new Grass(item.CoordX, item.CoordY, item.Game.SizeX, item.Game.SizeY),
-                                    Cell.LivingName.Grass, item.CoordX, item.CoordY);
+                                    LivingName.Grass, item.CoordX, item.CoordY);
                                 ValueCells[(int)gameField[item.CoordX, item.CoordY].livingName]++;
                                 break;
                             case 2:
                                 gameField[item.CoordX, item.CoordY] = new Cell(new Grass1(item.CoordX, item.CoordY, item.Game.SizeX, item.Game.SizeY,
-                                    options.grass1Property), Cell.LivingName.Grass1, item.CoordX, item.CoordY);
+                                    options.grass1Property), LivingName.Grass1, item.CoordX, item.CoordY);
                                 ValueCells[(int)gameField[item.CoordX, item.CoordY].livingName]++;
                                 break;
                             case 3:
                                 gameField[item.CoordX, item.CoordY] = new Cell(new Grass2(item.CoordX, item.CoordY, item.Game.SizeX, item.Game.SizeY,
-                                    options.grass2Property), Cell.LivingName.Grass2, item.CoordX, item.CoordY);
+                                    options.grass2Property), LivingName.Grass2, item.CoordX, item.CoordY);
                                 ValueCells[(int)gameField[item.CoordX, item.CoordY].livingName]++;
                                 break;
                             case 4:
                                 gameField[item.CoordX, item.CoordY] = new Cell(new Herbivorous1(item.CoordX, item.CoordY, item.Game.SizeX, item.Game.SizeY,
-                                    options.herbivorous1Property, options.grass2Property), Cell.LivingName.Herbivorous1, item.CoordX, item.CoordY);
+                                    options.herbivorous1Property, options.grass2Property), LivingName.Herbivorous1, item.CoordX, item.CoordY);
                                 ValueCells[(int)gameField[item.CoordX, item.CoordY].livingName]++;
                                 break;
                         }
@@ -102,16 +102,10 @@ namespace Life.BaseData
             return sb.ToString();
         }
 
-        public void ErrorBase(Exception ex, StartConsole console)
+        public void ErrorBase(Exception ex)
         {
             var msg = ShowFullExceptionMessage(ex);
             Console.WriteLine(msg);
-            Console.WriteLine("\nДля входа в главное меню нажмите Enter");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter)
-            {
-                Thread.Sleep(500);
-            }
-            console.Run();
         }
     }
 }

@@ -1,13 +1,19 @@
 ﻿using Life.LivingProperty;
+using System.Runtime.Serialization;
 
 namespace Life.Initialization
 {
+    [DataContract]
     public class Options
     {
-        public GameProperty gameProperty = new GameProperty("User", "Life", 5, 5);
-        public Grass1Property grass1Property = new Grass1Property(3, 2);
-        public Grass2Property grass2Property = new Grass2Property(0, 2);
-        public Herbivorous1Property herbivorous1Property = new Herbivorous1Property(10, 10, 1, 0, 1, 1, 3, 1);
+        [DataMember(Name = "gameProperty")]
+        public GameProperty gameProperty;
+        [DataMember(Name = "grass1Property")]
+        public Grass1Property grass1Property;
+        [DataMember(Name = "grass2Property")]
+        public Grass2Property grass2Property;
+        [DataMember(Name = "herbivorous1Property")]
+        public Herbivorous1Property herbivorous1Property;
         public GameProperty ChangeGameProperty(string nameplayer, string nameplay, int sizeX, int sizeY)
         {
             gameProperty.NamePlayer = nameplayer;

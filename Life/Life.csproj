@@ -73,6 +73,10 @@
     <Compile Include="Game.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GameConsole\Game1Console.cs" />
+    <Compile Include="GameConsole\Game2Console.cs" />
+    <Compile Include="GameConsole\Game3Console.cs" />
+    <Compile Include="GameConsole\Game4Console.cs" />
     <Compile Include="Gaming\Game4.cs" />
     <Compile Include="Gaming\GameBase.cs" />
     <Compile Include="Initialization\GenerateRandom.cs" />
@@ -83,16 +87,19 @@
     <Compile Include="LivingProperty\Grass2Property.cs" />
     <Compile Include="LivingProperty\GameProperty.cs" />
     <Compile Include="LivingProperty\Herbivorous1Property.cs" />
-    <Compile Include="Living\Grass.cs" />
-    <Compile Include="Living\Grass1.cs" />
-    <Compile Include="Living\Grass2.cs" />
+    <Compile Include="Living\Grass\Life\Grass.cs" />
+    <Compile Include="Living\Grass\Life\Grass1.cs" />
+    <Compile Include="Living\Grass\Grass2.cs" />
     <Compile Include="Living\Herbivorous1.cs" />
+    <Compile Include="Living\LivingBase.cs" />
+    <Compile Include="Living\Grass\LivingBaseGrass.cs" />
+    <Compile Include="Living\Grass\Life\LivingBaseGrassLife.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Gaming\Game1.cs" />
     <Compile Include="Gaming\Game2.cs" />
     <Compile Include="Gaming\Game3.cs" />
-    <Compile Include="Models\MyConsole.cs" />
-    <Compile Include="Models\StartConsole.cs" />
+    <Compile Include="GameConsole\GameBaseConsole.cs" />
     <Compile Include="MSreplication_options.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>

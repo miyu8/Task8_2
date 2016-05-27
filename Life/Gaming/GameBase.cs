@@ -7,14 +7,15 @@ namespace Life.Gaming
     {
         public int iteration;
         public int[] ValueCells = new int[6];
+        public int Type { get; protected set; }
         public Cell[,] gameField { get; set; }
         public Cell[,] gameFieldNext;
         public List<Cell[,]> ListgameField = new List<Cell[,]>();
         public GameProperty gameProperty { get; set; }
         public GenerateRandom generaterandom = new GenerateRandom();
 
-
         public abstract void InitRnd();
+
         public bool Step()
         {
             gameFieldNext = new Cell[gameProperty.SizeX, gameProperty.SizeY];

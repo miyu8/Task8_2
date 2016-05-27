@@ -1,6 +1,6 @@
-﻿using Life.Living;
-using Life.LivingProperty;
+﻿using Life.LivingProperty;
 using Life.Models;
+using Life.Living.Grass.Life;
 
 namespace Life.Gaming
 {
@@ -10,6 +10,7 @@ namespace Life.Gaming
 
         public Game3(GameProperty gameproperty, Grass1Property grass1property)
         {
+            Type = 3;
             gameProperty = gameproperty;
             grass1Property = grass1property;
         }
@@ -27,12 +28,12 @@ namespace Life.Gaming
                         case 2:
                             if (generaterandom.Coin())
                             {
-                                gameField[i, j] = new Cell(new Grass(i, j, gameProperty.SizeX, gameProperty.SizeY), Cell.LivingName.Grass, i, j);
+                                gameField[i, j] = new Cell(new Grass(i, j, gameProperty.SizeX, gameProperty.SizeY), LivingName.Grass, i, j);
                                 ValueCells[(int)gameField[i, j].livingName]++;
                             }
                             else if (generaterandom.Coin())
                             {
-                                gameField[i, j] = new Cell(new Grass1(i, j, gameProperty.SizeX, gameProperty.SizeY, grass1Property), Cell.LivingName.Grass1, i, j);
+                                gameField[i, j] = new Cell(new Grass1(i, j, gameProperty.SizeX, gameProperty.SizeY, grass1Property), LivingName.Grass1, i, j);
                                 ValueCells[(int)gameField[i, j].livingName]++;
                             }
                             break;

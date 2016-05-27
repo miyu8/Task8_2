@@ -1,6 +1,7 @@
 ﻿using Life.Living;
 using Life.LivingProperty;
 using Life.Models;
+using Life.Living.Grass.Life;
 
 namespace Life.Gaming
 {
@@ -9,6 +10,7 @@ namespace Life.Gaming
         Grass1Property grass1Property;
         public Game2(GameProperty gameproperty, Grass1Property grass1property)
         {
+            Type = 2;
             gameProperty = gameproperty;
             grass1Property = grass1property;
         }
@@ -24,7 +26,7 @@ namespace Life.Gaming
                         case 0 - 2:
                             break;
                         case 3:
-                            gameField[i, j] = new Cell(new Grass1(i, j, gameProperty.SizeX, gameProperty.SizeY, grass1Property), Cell.LivingName.Grass1, i, j);
+                            gameField[i, j] = new Cell(new Grass1(i, j, gameProperty.SizeX, gameProperty.SizeY, grass1Property), LivingName.Grass1, i, j);
                             ValueCells[(int)gameField[i, j].livingName]++;
                             break;
                     }

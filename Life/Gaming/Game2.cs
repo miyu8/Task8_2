@@ -1,11 +1,10 @@
-﻿using Life.Living;
-using Life.LivingProperty;
+﻿using Life.LivingProperty;
 using Life.Models;
 using Life.Living.Grass.Life;
 
 namespace Life.Gaming
 {
-    class Game2 : GameBase
+    public class Game2 : GameBase
     {
         Grass1Property grass1Property;
         public Game2(GameProperty gameproperty, Grass1Property grass1property)

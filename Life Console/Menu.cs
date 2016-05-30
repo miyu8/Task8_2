@@ -5,10 +5,11 @@ using Life.BaseData;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using Life;
 
-namespace Life
+namespace Life_Console
 {
-    class Menu
+    public class Menu
     {
         bool exit;
         int choise = 0;
@@ -37,12 +38,13 @@ namespace Life
             MainMenu();
         }
 
-        private void IsData()
+        public void IsData()
         {
             try
             {
                 using (db = new DataModelContainer())
                 {
+                    db.Database.CreateIfNotExists();
                     if (db.GameSet.Count() != 0)
                         boolMenu[1] = true;
                     else
@@ -130,7 +132,9 @@ namespace Life
                 {
                     using (db = new DataModelContainer())
                     {
-                        menu3 = new string[db.GameSet.Count()];
+                        int count = db.GameSet.Count();
+                        if (count == 0) break;
+                        menu3 = new string[count];
                         foreach (var item in db.GameSet)
                         {
                             menu3[i] = string.Format("| {0,-20} | {1,-20} | {2,-20} | {3,-20} | {4,-20}", item.Id, item.Type, item.Iteration, item.SizeX, item.SizeY);

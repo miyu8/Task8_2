@@ -90,22 +90,15 @@ namespace Life.BaseData
             }
         }
 
-        private string ShowFullExceptionMessage(Exception ex)
+        public string ErrorBase(Exception ex)
         {
             var sb = new StringBuilder(ex.Message);
-            Console.Clear();
             while (ex.InnerException != null)
             {
                 ex = ex.InnerException;
                 sb.AppendLine(" <=").Append(ex.Message);
             }
             return sb.ToString();
-        }
-
-        public void ErrorBase(Exception ex)
-        {
-            var msg = ShowFullExceptionMessage(ex);
-            Console.WriteLine(msg);
         }
     }
 }

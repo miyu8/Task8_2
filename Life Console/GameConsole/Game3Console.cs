@@ -2,7 +2,7 @@
 
 namespace Life.GameConsole
 {
-    class Game3Console : GameBaseConsole
+    public class Game3Console : GameBaseConsole
     {
         public Game3Console(int x, int y, string game) : base(x, y, game)
         {

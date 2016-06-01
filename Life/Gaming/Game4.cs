@@ -5,7 +5,7 @@ using Life.Living.Grass;
 
 namespace Life.Gaming
 {
-    class Game4 : GameBase
+    public class Game4 : GameBase
     {
         Grass2Property grass2Property;
         Herbivorous1Property herbivorous1Property;

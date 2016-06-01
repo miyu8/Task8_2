@@ -76,7 +76,6 @@ namespace Life.Initialization
                     return;
                 }
             }
-            recordBase.RemoveList(Id);
         }
 
         public void End()

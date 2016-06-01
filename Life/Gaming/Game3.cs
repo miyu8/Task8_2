@@ -4,7 +4,7 @@ using Life.Living.Grass.Life;
 
 namespace Life.Gaming
 {
-    class Game3 : GameBase
+    public class Game3 : GameBase
     {
         Grass1Property grass1Property;
 
